@@ -1,57 +1,44 @@
 (()=> {
 const $=id=>document.getElementById(id);
-const KEY='jtroute_pwa_v02';
-let mode='inicio', imageFile=null, previewUrl=null;
+const KEY='jtroute_pwa_v03';
+let mode='inicio', imageFile=null, previewUrl=null, selectedStyle='zero';
+const styles=[
+{id:'zero',name:'ZERO SYSTEM',tag:'Minimalismo cyber',start:d=>`ZERO / JT\nROUTE INITIALIZATION\nUSER     : ${d.name}\nZONE     : VALLE DE CHALCO\nC.P.     : ${d.cp}\nSERVICE  : ${d.service}\nPACKAGES : ${d.total}\n[ ROUTE_STATUS: ACTIVE ]\nSYSTEM LOG // ${d.date}`,end:d=>`ZERO / JT\nROUTE TERMINATION\nUSER      : ${d.name}\nZONE      : VALLE DE CHALCO\nC.P.      : ${d.cp}\nSERVICE   : ${d.service}\nASSIGNED  : ${d.total}\nDELIVERED : ${d.done}\nPENDING   : ${d.pending}\n[ ROUTE_STATUS: COMPLETED ]\nSYSTEM LOG // ${d.date}`},
+{id:'neon',name:'NEON TOKYO',tag:'Anime futurista',start:d=>`✦ NEO TOKYO // DELIVERY ✦\nMISSION STARTED\nPILOT    » ${d.name}\nSECTOR   » VALLE DE CHALCO\nZONE ID  » ${d.cp}\nUNIT     » ${d.service}\nCARGO    » ${d.total} PACKAGES\nSTATUS   » 🚀 IN PROGRESS\nTIMESTAMP: ${d.date}`,end:d=>`✦ NEO TOKYO // DELIVERY ✦\nMISSION COMPLETE\nPILOT      » ${d.name}\nSECTOR     » VALLE DE CHALCO\nZONE ID    » ${d.cp}\nUNIT       » ${d.service}\nCARGO      » ${d.total}\nDELIVERED  » ${d.done}\nREMAINING  » ${d.pending}\nSTATUS     » ✨ COMPLETE\nTIMESTAMP: ${d.date}`},
+{id:'ghost',name:'GHOST PROTOCOL',tag:'Terminal táctico',start:d=>`[ GHOST PROTOCOL ]\n>> OPERATION: ROUTE START\nOPERATOR : ${d.name}\nAREA     : VALLE DE CHALCO\nPOSTAL   : ${d.cp}\nCHANNEL  : ${d.service}\nLOAD     : ${d.total}\n>> EXECUTION AUTHORIZED\nLOG_DATE : ${d.date}`,end:d=>`[ GHOST PROTOCOL ]\n>> OPERATION: ROUTE CLOSED\nOPERATOR : ${d.name}\nAREA     : VALLE DE CHALCO\nPOSTAL   : ${d.cp}\nCHANNEL  : ${d.service}\nLOAD     : ${d.total}\nSECURED  : ${d.done}\nOPEN     : ${d.pending}\n>> MISSION COMPLETE\nLOG_DATE : ${d.date}`},
+{id:'orbital',name:'ORBITAL DELIVERY',tag:'Ciencia ficción',start:d=>`ORBITAL // LOGISTICS NETWORK\nFLIGHT PLAN: INITIATED\nCREW       : ${d.name}\nSECTOR     : VALLE DE CHALCO\nDOCK       : ${d.cp}\nFLEET      : ${d.service}\nSUPPLIES   : ${d.total} UNITS\nSIGNAL     : ONLINE\nEARTH DATE : ${d.date}`,end:d=>`ORBITAL // LOGISTICS NETWORK\nFLIGHT PLAN: COMPLETE\nCREW       : ${d.name}\nSECTOR     : VALLE DE CHALCO\nDOCK       : ${d.cp}\nFLEET      : ${d.service}\nSUPPLIES   : ${d.total}\nDELIVERED  : ${d.done}\nIN HOLD    : ${d.pending}\nSIGNAL     : MISSION COMPLETE\nEARTH DATE : ${d.date}`},
+{id:'command',name:'CYBER COMMAND',tag:'Centro de operaciones',start:d=>`CYBER COMMAND / FIELD REPORT\nOPERATIVE : ${d.name}\nDISTRICT  : VALLE DE CHALCO\nZIP NODE  : ${d.cp}\nROUTE     : ${d.service}\nASSIGNMENT: ${d.total} PACKAGES\nOPERATION : ACTIVE\nDATE      : ${d.date}`,end:d=>`CYBER COMMAND / FIELD REPORT\nOPERATIVE : ${d.name}\nDISTRICT  : VALLE DE CHALCO\nZIP NODE  : ${d.cp}\nROUTE     : ${d.service}\nASSIGNED  : ${d.total}\nCOMPLETED : ${d.done}\nUNRESOLVED: ${d.pending}\nOPERATION : CLOSED\nDATE      : ${d.date}`},
+{id:'matrix',name:'MATRIX DELIVERY',tag:'Hacker terminal',start:d=>`Wake up, ${d.name}...\nMATRIX // ROUTE SESSION\n> sector = VALLE DE CHALCO\n> cp = ${d.cp}\n> protocol = ${d.service}\n> packets_loaded = ${d.total}\n> route = RUNNING\n> system_time = ${d.date}`,end:d=>`MATRIX // ROUTE SESSION\n> operator = ${d.name}\n> sector = VALLE DE CHALCO\n> cp = ${d.cp}\n> protocol = ${d.service}\n> packets_loaded = ${d.total}\n> packets_delivered = ${d.done}\n> packets_pending = ${d.pending}\n> route = TERMINATED\n> system_time = ${d.date}`}
+];
 let data={postals:['56617','56618','56619','56613','56615'],history:[],profile:''};
-try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}')};}catch(e){}
+try{data={...data,...JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jtroute_pwa_v02')||'{}')};}catch(e){}
 function persist(){localStorage.setItem(KEY,JSON.stringify(data));}
-function dateText(){return new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(new Date());}
-function msg(){
- const total=Number($('packages').value)||0,done=Number($('delivered')?.value)||0;
- return ['📦 J&T EXPRESS','━━━━━━━━━━━━━━',mode==='inicio'?'🚚 INICIO DE RUTA':'🏁 FIN DE RUTA','📅 Fecha: '+dateText(),'👤 Repartidor: '+($('name').value.trim()||'Sin especificar'),'📍 Zona: VALLE DE CHALCO','📮 C.P.: '+($('postal').value||'Sin especificar'),'📦 Servicio: '+$('service').value,'📋 Paquetes asignados: '+total,...(mode==='fin'?['✅ Entregados: '+done,'📦 Pendientes: '+Math.max(0,total-done)]:[]),'━━━━━━━━━━━━━━'].join('\\n');
-}
-function update(){ $('today').textContent=dateText();$('message').textContent=msg(); }
-function renderPostals(){
- $('postal').innerHTML=data.postals.map(p=>'<option value="'+p+'">'+p+'</option>').join('');
- $('postalList').innerHTML=data.postals.map(p=>'<div class="postal-row"><span>CP '+p+'</span><button type="button" data-remove="'+p+'">Eliminar</button></div>').join('')||'<p class="muted">No hay códigos guardados.</p>';
-}
-function renderHistory(){
- const list=$('historyList');list.innerHTML='';
- if(!data.history.length){list.className='muted';list.textContent='Sin reportes todavía.';return;}
- list.className='';
- data.history.slice().reverse().forEach(item=>{const el=document.createElement('div');el.className='history-item';const b=document.createElement('strong');b.textContent=item.type+' · '+item.date;const s=document.createElement('span');s.textContent=item.name+' · '+item.service+' · CP '+item.cp+' · '+item.packages+' paquetes';el.append(b,s);list.append(el);});
-}
+function dateText(){return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());}
+function values(){const total=Number($('packages').value)||0,done=Number($('delivered').value)||0;return{name:$('name').value.trim()||'SALVADOR SUAREZ',cp:$('postal').value||'56617',service:$('service').value,total,done,pending:Math.max(0,total-done),date:dateText()};}
+function renderMsg(){const d=values(),s=styles.find(x=>x.id===selectedStyle)||styles[0];$('message').textContent=mode==='inicio'?s.start(d):s.end(d);}
+function update(){ $('today').textContent=new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(new Date());renderMsg();if(document.body.classList.contains('styles-open'))renderStyleDrawer();}
+function renderPostals(){$('postal').innerHTML=data.postals.map(p=>`<option value="${p}">${p}</option>`).join('');$('postalList').innerHTML=data.postals.map(p=>`<div class="postal-row"><span>CP ${p}</span><button type="button" data-remove="${p}">Eliminar</button></div>`).join('')||'<p class="muted">No hay códigos guardados.</p>';}
+function renderHistory(){const list=$('historyList');list.innerHTML='';if(!data.history.length){list.className='muted';list.textContent='Sin reportes todavía.';return;}list.className='';data.history.slice().reverse().forEach(item=>{const el=document.createElement('div');el.className='history-item';const b=document.createElement('strong');b.textContent=item.type+' · '+item.date;const s=document.createElement('span');s.textContent=item.name+' · '+item.service+' · CP '+item.cp+' · '+item.packages+' paquetes';el.append(b,s);list.append(el);});}
 function setMode(next){mode=next;document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('deliveredWrap').hidden=mode!=='fin';update();}
-function save(){data.profile=$('name').value.trim();data.history.push({type:mode==='inicio'?'INICIO DE RUTA':'FIN DE RUTA',date:dateText(),name:data.profile||'Sin nombre',service:$('service').value,cp:$('postal').value,packages:Number($('packages').value)||0});persist();renderHistory();$('status').textContent='Reporte guardado en el historial.';}
+function openDrawer(){document.body.classList.add('styles-open');$('styleDrawer').setAttribute('aria-hidden','false');renderStyleDrawer();}
+function closeDrawer(){document.body.classList.remove('styles-open');$('styleDrawer').setAttribute('aria-hidden','true');}
+function renderStyleDrawer(){const d=values();$('styleList').innerHTML=styles.map(s=>{const preview=mode==='inicio'?s.start(d):s.end(d);return `<button type="button" class="style-option ${s.id===selectedStyle?'selected':''}" data-style="${s.id}"><b>${s.name}</b><em>${s.id===selectedStyle?'SELECCIONADO':'VER ESTILO'}</em><small>${s.tag}</small><span class="style-mini">${preview.replaceAll('<','&lt;')}</span></button>`}).join('');const current=styles.find(s=>s.id===selectedStyle)||styles[0];$('styleSelectedName').textContent=current.name;$('stylePreview').textContent=mode==='inicio'?current.start(d):current.end(d);}
+function save(){data.profile=$('name').value.trim();const d=values();data.history.push({type:mode==='inicio'?'INICIO DE RUTA':'FIN DE RUTA',date:new Date().toLocaleDateString('es-MX'),name:d.name,service:d.service,cp:d.cp,packages:d.total});persist();renderHistory();$('status').textContent='Reporte guardado en el historial.';}
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 ['name','service','packages','postal','delivered'].forEach(id=>$(id)?.addEventListener('input',update));
 if(data.profile)$('name').value=data.profile;
-$('screenshot').addEventListener('change',e=>{
- imageFile=e.target.files[0]||null;
- $('uploadLabel').textContent=imageFile?imageFile.name:'Seleccionar captura';
- if(previewUrl)URL.revokeObjectURL(previewUrl);
- if(imageFile){previewUrl=URL.createObjectURL(imageFile);$('preview').src=previewUrl;$('preview').hidden=false;}else $('preview').hidden=true;
-});
-$('settingsBtn').addEventListener('click',()=>$('settings').showModal());
-$('managePostal').addEventListener('click',()=>$('settings').showModal());
-$('addPostal').addEventListener('click',()=>{
- const cp=$('newPostal').value.trim();
- if(!/^\\d{5}$/.test(cp)){alert('Ingresa un código postal de 5 dígitos.');return;}
- if(!data.postals.includes(cp))data.postals.push(cp);
- $('newPostal').value='';persist();renderPostals();update();
-});
+$('screenshot').addEventListener('change',e=>{imageFile=e.target.files[0]||null;$('uploadLabel').textContent=imageFile?imageFile.name:'Seleccionar captura';if(previewUrl)URL.revokeObjectURL(previewUrl);if(imageFile){previewUrl=URL.createObjectURL(imageFile);$('preview').src=previewUrl;$('preview').hidden=false;}else $('preview').hidden=true;});
+$('settingsBtn').addEventListener('click',()=>$('settings').showModal());$('managePostal').addEventListener('click',()=>$('settings').showModal());
+$('addPostal').addEventListener('click',()=>{const cp=$('newPostal').value.trim();if(!/^\d{5}$/.test(cp)){alert('Ingresa un código postal de 5 dígitos.');return;}if(!data.postals.includes(cp))data.postals.push(cp);$('newPostal').value='';persist();renderPostals();update();});
 $('postalList').addEventListener('click',e=>{const cp=e.target.dataset.remove;if(cp){data.postals=data.postals.filter(x=>x!==cp);persist();renderPostals();update();}});
-$('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(msg());$('status').textContent='Texto copiado.';}catch(e){$('status').textContent='No se pudo copiar automáticamente.';}});
-$('saveBtn').addEventListener('click',save);
-$('clearHistory').addEventListener('click',()=>{if(confirm('¿Vaciar todo el historial?')){data.history=[];persist();renderHistory();}});
-$('reportForm').addEventListener('submit',async e=>{
- e.preventDefault();const text=msg();
- try{
-  if(imageFile&&navigator.canShare&&navigator.canShare({files:[imageFile]})){await navigator.share({files:[imageFile],text,title:'J&T Route'});$('status').textContent='Menú para compartir abierto.';}
-  else if(imageFile){await navigator.clipboard.writeText(text);$('status').textContent='Texto copiado. Adjunta la captura manualmente en WhatsApp.';}
-  else{await navigator.clipboard.writeText(text);$('status').textContent='Texto copiado. Selecciona una captura para compartir imagen + texto.';}
- }catch(err){if(err.name!=='AbortError')$('status').textContent='No se pudo compartir. Puedes copiar el texto.';}
-});
-renderPostals();renderHistory();setMode('inicio');
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+$('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('message').textContent);$('status').textContent='Texto copiado.';}catch(e){$('status').textContent='No se pudo copiar automáticamente.';}});
+$('saveBtn').addEventListener('click',save);$('clearHistory').addEventListener('click',()=>{if(confirm('¿Vaciar todo el historial?')){data.history=[];persist();renderHistory();}});
+$('reportForm').addEventListener('submit',async e=>{e.preventDefault();const text=$('message').textContent;try{if(imageFile&&navigator.canShare&&navigator.canShare({files:[imageFile]})){await navigator.share({files:[imageFile],text,title:'J&T Route'});$('status').textContent='Menú para compartir abierto.';}else{await navigator.clipboard.writeText(text);$('status').textContent=imageFile?'Texto copiado. Adjunta la captura manualmente.':'Texto copiado.';}}catch(err){if(err.name!=='AbortError')$('status').textContent='No se pudo compartir. Puedes copiar el texto.';}});
+$('stylesBtn').addEventListener('click',openDrawer);$('closeStyles').addEventListener('click',closeDrawer);$('styleBackdrop').addEventListener('click',closeDrawer);
+$('styleList').addEventListener('click',e=>{const btn=e.target.closest('[data-style]');if(!btn)return;selectedStyle=btn.dataset.style;renderStyleDrawer();});
+$('applyStyle').addEventListener('click',()=>{localStorage.setItem('jtroute_report_style',selectedStyle);renderMsg();$('status').textContent='Estilo '+(styles.find(s=>s.id===selectedStyle)?.name||'ZERO SYSTEM')+' aplicado.';closeDrawer();});
+$('resetStyle').addEventListener('click',()=>{selectedStyle='zero';localStorage.setItem('jtroute_report_style','zero');renderStyleDrawer();renderMsg();});
+try{selectedStyle=localStorage.getItem('jtroute_report_style')||'zero';if(!styles.some(s=>s.id===selectedStyle))selectedStyle='zero';}catch(e){}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+renderPostals();renderHistory();setMode('inicio');if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 })();
