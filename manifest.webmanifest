@@ -1,0 +1,11 @@
+{
+  "name":"J&T Route",
+  "short_name":"J&T Route",
+  "description":"Control de reportes de inicio y fin de ruta",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#0b111a",
+  "theme_color":"#10151e",
+  "lang":"es-MX"
+}
