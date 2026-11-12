@@ -1,6 +1,7 @@
 (()=> {
 const $=id=>document.getElementById(id);
 const KEY='jtroute_pwa_v03';
+const CP_BY_SERVICE={ETF:['56610','56615','56613','56619'],SOC:['56616','56614','56618','56617']};
 let mode='inicio', imageFile=null, previewUrl=null, selectedStyle='zero';
 const styles=[
 {id:'zero',name:'ZERO SYSTEM',tag:'Minimalismo cyber',start:d=>`ZERO / JT\nROUTE INITIALIZATION\nUSER     : ${d.name}\nZONE     : VALLE DE CHALCO\nC.P.     : ${d.cp}\nSERVICE  : ${d.service}\nPACKAGES : ${d.total}\n[ ROUTE_STATUS: ACTIVE ]\nSYSTEM LOG // ${d.date}`,end:d=>`ZERO / JT\nROUTE TERMINATION\nUSER      : ${d.name}\nZONE      : VALLE DE CHALCO\nC.P.      : ${d.cp}\nSERVICE   : ${d.service}\nASSIGNED  : ${d.total}\nDELIVERED : ${d.done}\nPENDING   : ${d.pending}\n[ ROUTE_STATUS: COMPLETED ]\nSYSTEM LOG // ${d.date}`},
@@ -12,29 +13,35 @@ const styles=[
 ];
 let data={postals:['56617','56618','56619','56613','56615'],history:[],profile:''};
 try{data={...data,...JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jtroute_pwa_v02')||'{}')};}catch(e){}
+CP_BY_SERVICE.ETF.concat(CP_BY_SERVICE.SOC).forEach(cp=>{if(!data.postals.includes(cp))data.postals.push(cp);});
 function persist(){localStorage.setItem(KEY,JSON.stringify(data));}
 function dateText(){return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());}
 function values(){const total=Number($('packages').value)||0,done=Number($('delivered').value)||0;return{name:$('name').value.trim()||'SALVADOR SUAREZ',cp:$('postal').value||'56617',service:$('service').value,total,done,pending:Math.max(0,total-done),date:dateText()};}
 function renderMsg(){const d=values(),s=styles.find(x=>x.id===selectedStyle)||styles[0];$('message').textContent=mode==='inicio'?s.start(d):s.end(d);}
 function update(){ $('today').textContent=new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}).format(new Date());renderMsg();if(document.body.classList.contains('styles-open'))renderStyleDrawer();}
-function renderPostals(){$('postal').innerHTML=data.postals.map(p=>`<option value="${p}">${p}</option>`).join('');$('postalList').innerHTML=data.postals.map(p=>`<div class="postal-row"><span>CP ${p}</span><button type="button" data-remove="${p}">Eliminar</button></div>`).join('')||'<p class="muted">No hay códigos guardados.</p>';}
+function renderPostals(){const current=$('postal').value;$('postal').innerHTML=data.postals.map(p=>`<option value="${p}">${p}</option>`).join('');if(data.postals.includes(current))$('postal').value=current;$('postalList').innerHTML=data.postals.map(p=>`<div class="postal-row"><span>CP ${p}</span><button type="button" data-remove="${p}">Eliminar</button></div>`).join('')||'<p class="muted">No hay códigos guardados.</p>';renderCpPicker();}
+function renderCpPicker(){for(const service of ['ETF','SOC']){const target=$(service==='ETF'?'etfPostals':'socPostals');target.innerHTML=CP_BY_SERVICE[service].map(cp=>`<button type="button" class="cp-choice ${$('service').value===service&&$('postal').value===cp?'active':''}" data-service="${service}" data-cp="${cp}">${cp}</button>`).join('');}}
+function choosePostal(service,cp){$('service').value=service;if(!data.postals.includes(cp)){data.postals.push(cp);persist();renderPostals();} $('postal').value=cp;renderCpPicker();update();$('status').textContent=`Seleccionaste ${service} · CP ${cp}.`;}
 function renderHistory(){const list=$('historyList');list.innerHTML='';if(!data.history.length){list.className='muted';list.textContent='Sin reportes todavía.';return;}list.className='';data.history.slice().reverse().forEach(item=>{const el=document.createElement('div');el.className='history-item';const b=document.createElement('strong');b.textContent=item.type+' · '+item.date;const s=document.createElement('span');s.textContent=item.name+' · '+item.service+' · CP '+item.cp+' · '+item.packages+' paquetes';el.append(b,s);list.append(el);});}
 function setMode(next){mode=next;document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('deliveredWrap').hidden=mode!=='fin';update();}
-function openDrawer(){document.body.classList.add('styles-open');$('styleDrawer').setAttribute('aria-hidden','false');renderStyleDrawer();}
+function openDrawer(){document.body.classList.add('styles-open');$('styleDrawer').setAttribute('aria-hidden','false');renderStyleDrawer();renderCpPicker();}
 function closeDrawer(){document.body.classList.remove('styles-open');$('styleDrawer').setAttribute('aria-hidden','true');}
 function renderStyleDrawer(){const d=values();$('styleList').innerHTML=styles.map(s=>{const preview=mode==='inicio'?s.start(d):s.end(d);return `<button type="button" class="style-option ${s.id===selectedStyle?'selected':''}" data-style="${s.id}"><b>${s.name}</b><em>${s.id===selectedStyle?'SELECCIONADO':'VER ESTILO'}</em><small>${s.tag}</small><span class="style-mini">${preview.replaceAll('<','&lt;')}</span></button>`}).join('');const current=styles.find(s=>s.id===selectedStyle)||styles[0];$('styleSelectedName').textContent=current.name;$('stylePreview').textContent=mode==='inicio'?current.start(d):current.end(d);}
 function save(){data.profile=$('name').value.trim();const d=values();data.history.push({type:mode==='inicio'?'INICIO DE RUTA':'FIN DE RUTA',date:new Date().toLocaleDateString('es-MX'),name:d.name,service:d.service,cp:d.cp,packages:d.total});persist();renderHistory();$('status').textContent='Reporte guardado en el historial.';}
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
-['name','service','packages','postal','delivered'].forEach(id=>$(id)?.addEventListener('input',update));
+['name','packages','postal','delivered'].forEach(id=>$(id)?.addEventListener('input',update));
+$('service').addEventListener('change',()=>{renderCpPicker();update();});
+$('postal').addEventListener('change',()=>{renderCpPicker();update();});
 if(data.profile)$('name').value=data.profile;
 $('screenshot').addEventListener('change',e=>{imageFile=e.target.files[0]||null;$('uploadLabel').textContent=imageFile?imageFile.name:'Seleccionar captura';if(previewUrl)URL.revokeObjectURL(previewUrl);if(imageFile){previewUrl=URL.createObjectURL(imageFile);$('preview').src=previewUrl;$('preview').hidden=false;}else $('preview').hidden=true;});
 $('settingsBtn').addEventListener('click',()=>$('settings').showModal());$('managePostal').addEventListener('click',()=>$('settings').showModal());
 $('addPostal').addEventListener('click',()=>{const cp=$('newPostal').value.trim();if(!/^\d{5}$/.test(cp)){alert('Ingresa un código postal de 5 dígitos.');return;}if(!data.postals.includes(cp))data.postals.push(cp);$('newPostal').value='';persist();renderPostals();update();});
-$('postalList').addEventListener('click',e=>{const cp=e.target.dataset.remove;if(cp){data.postals=data.postals.filter(x=>x!==cp);persist();renderPostals();update();}});
+$('postalList').addEventListener('click',e=>{const cp=e.target.dataset.remove;if(cp){if(CP_BY_SERVICE.ETF.concat(CP_BY_SERVICE.SOC).includes(cp)){alert('Este CP pertenece al catálogo de franquicias y no se puede eliminar.');return;}data.postals=data.postals.filter(x=>x!==cp);persist();renderPostals();update();}});
 $('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('message').textContent);$('status').textContent='Texto copiado.';}catch(e){$('status').textContent='No se pudo copiar automáticamente.';}});
 $('saveBtn').addEventListener('click',save);$('clearHistory').addEventListener('click',()=>{if(confirm('¿Vaciar todo el historial?')){data.history=[];persist();renderHistory();}});
 $('reportForm').addEventListener('submit',async e=>{e.preventDefault();const text=$('message').textContent;try{if(imageFile&&navigator.canShare&&navigator.canShare({files:[imageFile]})){await navigator.share({files:[imageFile],text,title:'J&T Route'});$('status').textContent='Menú para compartir abierto.';}else{await navigator.clipboard.writeText(text);$('status').textContent=imageFile?'Texto copiado. Adjunta la captura manualmente.':'Texto copiado.';}}catch(err){if(err.name!=='AbortError')$('status').textContent='No se pudo compartir. Puedes copiar el texto.';}});
 $('stylesBtn').addEventListener('click',openDrawer);$('closeStyles').addEventListener('click',closeDrawer);$('styleBackdrop').addEventListener('click',closeDrawer);
+$('styleDrawer').addEventListener('click',e=>{const btn=e.target.closest('[data-cp]');if(btn)choosePostal(btn.dataset.service,btn.dataset.cp);});
 $('styleList').addEventListener('click',e=>{const btn=e.target.closest('[data-style]');if(!btn)return;selectedStyle=btn.dataset.style;renderStyleDrawer();});
 $('applyStyle').addEventListener('click',()=>{localStorage.setItem('jtroute_report_style',selectedStyle);renderMsg();$('status').textContent='Estilo '+(styles.find(s=>s.id===selectedStyle)?.name||'ZERO SYSTEM')+' aplicado.';closeDrawer();});
 $('resetStyle').addEventListener('click',()=>{selectedStyle='zero';localStorage.setItem('jtroute_report_style','zero');renderStyleDrawer();renderMsg();});

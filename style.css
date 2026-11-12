@@ -24,3 +24,15 @@ body.styles-open .style-backdrop{opacity:1;visibility:visible}body.styles-open .
 .drawer-head{display:flex;justify-content:space-between;align-items:flex-start}.drawer-head h2{font-size:23px;margin:7px 0 4px}.drawer-head p{margin:0;color:var(--muted);font-size:12px}.style-list{display:grid;gap:9px;overflow:auto;max-height:38%;padding:2px 3px 4px}
 .style-option{border:1px solid var(--line);background:#111c29;border-radius:14px;padding:12px;text-align:left;color:var(--text);display:grid;grid-template-columns:1fr auto;gap:5px;cursor:pointer}.style-option.selected{border-color:var(--orange);background:#ff6b3510;box-shadow:0 0 0 1px #ff6b3520}.style-option b{font:700 12px 'Space Grotesk';letter-spacing:.6px}.style-option small{color:var(--muted);font-size:10px}.style-option em{font-style:normal;color:var(--orange2);font-size:10px;align-self:center}.style-mini{grid-column:1/-1;color:#aebdce;font:10px/1.5 ui-monospace,monospace;white-space:pre-wrap;max-height:43px;overflow:hidden;border-top:1px solid #ffffff0d;padding-top:7px;margin-top:3px}
 .style-preview-wrap{display:flex;flex-direction:column;gap:8px;min-height:0;flex:1}.style-preview-wrap h3{font:600 14px 'Space Grotesk';margin:0}.style-chip{font-size:9px;color:var(--orange2);border:1px solid #ff6b3540;border-radius:20px;padding:5px 8px}.style-preview{flex:1;min-height:110px;overflow:auto;font:11px/1.65 ui-monospace,monospace;border-color:#35475c;background:#080f18}.drawer-actions{display:grid;grid-template-columns:.8fr 1.2fr;gap:9px}.drawer-actions button{padding:13px 8px;font-size:12px}
+
+/* Franchise postal selector in the slide-out menu */
+.style-drawer{overflow-y:auto}
+.cp-picker{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#0b141f;border:1px solid #2b3c50;border-radius:14px;padding:12px}
+.cp-group h3{font:700 12px 'Space Grotesk';letter-spacing:1px;color:var(--orange2);margin:0 0 8px}
+.cp-group h3 small{display:block;color:var(--muted);font:600 8px 'DM Sans';letter-spacing:1.2px;margin-top:2px}
+.cp-buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.cp-choice{border:1px solid #304157;background:#142131;color:#dce6f2;border-radius:9px;padding:10px 3px;font:700 11px 'Space Grotesk'}
+.cp-choice.active{border-color:var(--orange);background:#ff6b3522;color:#ff9a70;box-shadow:0 0 0 1px #ff6b3520}
+.cp-hint{grid-column:1/-1;margin:0;color:var(--muted);font-size:9px;line-height:1.4}
+.drawer-section-title{font:700 9px 'DM Sans';letter-spacing:1.5px;color:var(--muted);margin:1px 2px -5px}
+.style-list{max-height:25%}
