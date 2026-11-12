@@ -36,3 +36,94 @@ body.styles-open .style-backdrop{opacity:1;visibility:visible}body.styles-open .
 .cp-hint{grid-column:1/-1;margin:0;color:var(--muted);font-size:9px;line-height:1.4}
 .drawer-section-title{font:700 9px 'DM Sans';letter-spacing:1.5px;color:var(--muted);margin:1px 2px -5px}
 .style-list{max-height:25%}
+
+
+/* GLASSMORPHISM UI — J&T ROUTE cards */
+.panel{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.105) 0%,rgba(255,255,255,.035) 42%,rgba(255,255,255,.018) 100%),
+    linear-gradient(145deg,rgba(23,35,50,.66),rgba(12,21,33,.58));
+  border:1px solid rgba(204,225,255,.16);
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.13),
+    inset 0 -1px 0 rgba(255,255,255,.025);
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+  backdrop-filter:blur(22px) saturate(145%);
+}
+.panel::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);
+  pointer-events:none;
+}
+.panel::after{
+  content:"";
+  position:absolute;
+  width:190px;
+  height:190px;
+  top:-135px;
+  right:-75px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.09),transparent 70%);
+  pointer-events:none;
+}
+.panel>*{position:relative;z-index:1}
+#reportForm>.panel:first-child{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.115),rgba(255,255,255,.025) 62%),
+    linear-gradient(145deg,rgba(22,37,54,.72),rgba(11,20,32,.62));
+}
+.history{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.025)),
+    rgba(15,26,40,.62);
+}
+#historyList .history-item{
+  background:linear-gradient(135deg,rgba(255,255,255,.085),rgba(255,255,255,.025)),rgba(15,27,42,.52);
+  border:1px solid rgba(203,224,255,.13);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 8px 20px rgba(0,0,0,.13);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+.cp-picker{
+  background:linear-gradient(135deg,rgba(255,255,255,.095),rgba(255,255,255,.025)),rgba(10,20,32,.58);
+  border-color:rgba(203,224,255,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 12px 28px rgba(0,0,0,.16);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  backdrop-filter:blur(18px) saturate(140%);
+}
+.style-option{
+  background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.018)),rgba(13,25,39,.62);
+  border-color:rgba(203,224,255,.13);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+}
+.style-option.selected{
+  background:linear-gradient(135deg,rgba(255,126,76,.17),rgba(255,255,255,.025)),rgba(22,27,39,.72);
+  border-color:rgba(255,133,88,.72);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 0 22px rgba(255,107,53,.10);
+}
+.cp-choice{
+  background:linear-gradient(135deg,rgba(255,255,255,.085),rgba(255,255,255,.02)),rgba(15,29,44,.62);
+  border-color:rgba(203,224,255,.15);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+.cp-choice.active{
+  background:linear-gradient(135deg,rgba(255,130,82,.22),rgba(255,255,255,.035)),rgba(28,32,43,.72);
+  border-color:rgba(255,139,91,.82);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 18px rgba(255,107,53,.13);
+}
+@media(prefers-reduced-motion:no-preference){
+  .panel,.style-option,.cp-choice{transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease}
+  .style-option:active,.cp-choice:active{transform:scale(.985)}
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .panel{background:linear-gradient(145deg,#1a2a3c,#111c2a)}
+}
