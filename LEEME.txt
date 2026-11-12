@@ -1,5 +1,6 @@
-J&T Route v0.7.1 — Fix real de transparencia
+J&T Route v0.8 — 11 estilos nuevos de reporte
 
-Reemplaza style.css, app.js y sw.js.
-La versión anterior usaba multiplicaciones dentro de rgba() que Android Chrome no interpreta de forma consistente, y reglas de fondo con mayor prioridad pisaban el control. Esta corrección usa un alpha directo compatible y fuerza la actualización del fondo de todas las tarjetas glass.
-0% deja las superficies transparentes; 100% las hace sólidas. El control conserva el valor guardado.
+Reemplaza únicamente app.js y sw.js en GitHub.
+Se conservan los seis estilos originales: ZERO SYSTEM, NEON TOKYO, GHOST PROTOCOL, ORBITAL DELIVERY, CYBER COMMAND y MATRIX DELIVERY.
+Se agregan once: ROYAL DELIVERY, DARK EMPEROR, IMPERIAL, SHADOW DELIVERY, ONI EXPRESS, DRAGON CORE, ZERO PHANTOM, BLACK OPS, ROYAL TERMINATION, SAMURAI FINAL y DARK SYSTEM.
+Todos tienen formato de inicio y fin, y utilizan los datos actuales del formulario. Se conserva el estilo que ya tengas seleccionado.
