@@ -1,4 +1,5 @@
-J&T Route v0.7 — Control de transparencia Glassmorphism
+J&T Route v0.7.1 — Fix real de transparencia
 
-Reemplaza index.html, style.css, app.js y sw.js.
-En Configuración aparece el control Transparencia de tarjetas de 0 a 100. 0 deja las tarjetas prácticamente invisibles (conserva el contenido y controles); 100 las hace más sólidas. La preferencia se guarda en localStorage y se restaura al volver a abrir la PWA.
+Reemplaza style.css, app.js y sw.js.
+La versión anterior usaba multiplicaciones dentro de rgba() que Android Chrome no interpreta de forma consistente, y reglas de fondo con mayor prioridad pisaban el control. Esta corrección usa un alpha directo compatible y fuerza la actualización del fondo de todas las tarjetas glass.
+0% deja las superficies transparentes; 100% las hace sólidas. El control conserva el valor guardado.

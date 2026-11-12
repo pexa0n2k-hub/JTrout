@@ -1,4 +1,4 @@
-const CACHE='jtrout-pwa-v9-glass-opacity';
+const CACHE='jtrout-pwa-v10-glass-alpha-fix';
 const ASSETS=['./','./index.html','./style.css','./app.js','./manifest.webmanifest'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
