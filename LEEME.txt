@@ -1,17 +1,5 @@
-J&T ROUTE v0.4 — Selector manual de CP por franquicia
+J&T Route v0.6 — Fondos personalizados
 
-Reemplaza en GitHub los archivos:
-- index.html
-- style.css
-- app.js
-- sw.js
-
-El menú lateral ahora muestra los CP agrupados por ETF y SOC.
-Toca el código postal que te corresponda ese día. La app coloca la franquicia
-y el CP elegidos en el formulario y en el reporte. La selección es manual;
-no se cambia el CP automáticamente al cambiar de franquicia.
-
-Los ocho CP oficiales se agregan al selector de códigos postales y no se pueden
-eliminar por accidente. Los CP personalizados existentes se conservan.
-Después de subir los cuatro archivos, abre la PWA y recarga. Si Android conserva
-la versión anterior, cierra la PWA y vuelve a abrirla.
+Reemplaza index.html, style.css, app.js y sw.js.
+En Configuración podrás elegir una imagen de tu galería, previsualizarla, ajustar el oscurecimiento para conservar legibles las tarjetas glassmorphism y quitar el fondo cuando quieras.
+La imagen se guarda en IndexedDB del dispositivo y no se sube a GitHub ni a un servidor. El fondo es local para ese navegador/dispositivo; si borras los datos del sitio, tendrás que volver a elegirlo.

@@ -15,6 +15,15 @@ let data={postals:['56617','56618','56619','56613','56615'],history:[],profile:'
 try{data={...data,...JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jtroute_pwa_v02')||'{}')};}catch(e){}
 CP_BY_SERVICE.ETF.concat(CP_BY_SERVICE.SOC).forEach(cp=>{if(!data.postals.includes(cp))data.postals.push(cp);});
 function persist(){localStorage.setItem(KEY,JSON.stringify(data));}
+const WALL_DB='jtroute-wallpaper-db',WALL_STORE='wallpapers';
+let wallpaperUrl=null;
+function openWallDb(){return new Promise((resolve,reject)=>{const req=indexedDB.open(WALL_DB,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(WALL_STORE))req.result.createObjectStore(WALL_STORE);};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+async function saveWallpaper(blob){const db=await openWallDb();await new Promise((resolve,reject)=>{const tx=db.transaction(WALL_STORE,'readwrite');tx.objectStore(WALL_STORE).put(blob,'active');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();}
+async function readWallpaper(){const db=await openWallDb();const blob=await new Promise((resolve,reject)=>{const tx=db.transaction(WALL_STORE,'readonly');const req=tx.objectStore(WALL_STORE).get('active');req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);});db.close();return blob;}
+async function deleteWallpaper(){const db=await openWallDb();await new Promise((resolve,reject)=>{const tx=db.transaction(WALL_STORE,'readwrite');tx.objectStore(WALL_STORE).delete('active');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();}
+function applyWallpaper(blob){if(wallpaperUrl)URL.revokeObjectURL(wallpaperUrl);if(blob){wallpaperUrl=URL.createObjectURL(blob);document.documentElement.style.setProperty('--wallpaper-image',`url("${wallpaperUrl}")`);document.body.classList.add('has-wallpaper');$('wallpaperPreview').src=wallpaperUrl;$('wallpaperPreviewWrap').hidden=false;$('wallpaperLabel').textContent='Cambiar imagen';}else{wallpaperUrl=null;document.documentElement.style.removeProperty('--wallpaper-image');document.body.classList.remove('has-wallpaper');$('wallpaperPreviewWrap').hidden=true;$('wallpaperLabel').textContent='Elegir imagen de galería';}}
+async function initWallpaper(){try{const blob=await readWallpaper();if(blob)applyWallpaper(blob);}catch(e){console.warn('No se pudo cargar el fondo guardado',e);}}
+
 function dateText(){return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());}
 function values(){const total=Number($('packages').value)||0,done=Number($('delivered').value)||0;return{name:$('name').value.trim()||'SALVADOR SUAREZ',cp:$('postal').value||'SIN SELECCIONAR',service:$('service').value,total,done,pending:Math.max(0,total-done),date:dateText()};}
 function renderMsg(){const d=values(),s=styles.find(x=>x.id===selectedStyle)||styles[0];$('message').textContent=mode==='inicio'?s.start(d):s.end(d);}
@@ -35,6 +44,9 @@ $('postal').addEventListener('change',()=>{renderCpPicker();update();});
 if(data.profile)$('name').value=data.profile;
 $('screenshot').addEventListener('change',e=>{imageFile=e.target.files[0]||null;$('uploadLabel').textContent=imageFile?imageFile.name:'Seleccionar captura';if(previewUrl)URL.revokeObjectURL(previewUrl);if(imageFile){previewUrl=URL.createObjectURL(imageFile);$('preview').src=previewUrl;$('preview').hidden=false;}else $('preview').hidden=true;});
 $('settingsBtn').addEventListener('click',()=>$('settings').showModal());$('managePostal').addEventListener('click',()=>$('settings').showModal());
+$('wallpaperInput').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;if(!file.type.startsWith('image/')){$('status').textContent='Selecciona un archivo de imagen.';return;}try{await saveWallpaper(file);applyWallpaper(file);$('status').textContent='Fondo de pantalla guardado en este dispositivo.';}catch(err){$('status').textContent='No se pudo guardar. Prueba con una imagen más ligera.';}e.target.value='';});
+$('removeWallpaper').addEventListener('click',async()=>{try{await deleteWallpaper();applyWallpaper(null);$('status').textContent='Fondo personalizado eliminado.';}catch(err){$('status').textContent='No se pudo quitar el fondo.';}});
+$('wallpaperShade').addEventListener('input',e=>document.documentElement.style.setProperty('--wallpaper-shade',String(Number(e.target.value)/100)));
 $('addPostal').addEventListener('click',()=>{const cp=$('newPostal').value.trim();if(!/^\d{5}$/.test(cp)){alert('Ingresa un código postal de 5 dígitos.');return;}if(!data.postals.includes(cp))data.postals.push(cp);$('newPostal').value='';persist();renderPostals();update();});
 $('postalList').addEventListener('click',e=>{const cp=e.target.dataset.remove;if(cp){if(CP_BY_SERVICE.ETF.concat(CP_BY_SERVICE.SOC).includes(cp)){alert('Este CP pertenece al catálogo de franquicias y no se puede eliminar.');return;}data.postals=data.postals.filter(x=>x!==cp);persist();renderPostals();update();}});
 $('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('message').textContent);$('status').textContent='Texto copiado.';}catch(e){$('status').textContent='No se pudo copiar automáticamente.';}});
@@ -47,5 +59,5 @@ $('applyStyle').addEventListener('click',()=>{localStorage.setItem('jtroute_repo
 $('resetStyle').addEventListener('click',()=>{selectedStyle='zero';localStorage.setItem('jtroute_report_style','zero');renderStyleDrawer();renderMsg();});
 try{selectedStyle=localStorage.getItem('jtroute_report_style')||'zero';if(!styles.some(s=>s.id===selectedStyle))selectedStyle='zero';}catch(e){}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
-renderPostals();renderHistory();setMode('inicio');if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+renderPostals();renderHistory();setMode('inicio');$('wallpaperShade').dispatchEvent(new Event('input'));initWallpaper();if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 })();
