@@ -1,5 +1,4 @@
-J&T Route v0.6 — Fondos personalizados
+J&T Route v0.7 — Control de transparencia Glassmorphism
 
 Reemplaza index.html, style.css, app.js y sw.js.
-En Configuración podrás elegir una imagen de tu galería, previsualizarla, ajustar el oscurecimiento para conservar legibles las tarjetas glassmorphism y quitar el fondo cuando quieras.
-La imagen se guarda en IndexedDB del dispositivo y no se sube a GitHub ni a un servidor. El fondo es local para ese navegador/dispositivo; si borras los datos del sitio, tendrás que volver a elegirlo.
+En Configuración aparece el control Transparencia de tarjetas de 0 a 100. 0 deja las tarjetas prácticamente invisibles (conserva el contenido y controles); 100 las hace más sólidas. La preferencia se guarda en localStorage y se restaura al volver a abrir la PWA.
