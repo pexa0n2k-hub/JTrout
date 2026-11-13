@@ -1,6 +1,19 @@
-J&T Route v0.8 — 11 estilos nuevos de reporte
+J&T ROUTE v0.9 — DEVOLUCIONES POR RENGLÓN
 
-Reemplaza únicamente app.js y sw.js en GitHub.
-Se conservan los seis estilos originales: ZERO SYSTEM, NEON TOKYO, GHOST PROTOCOL, ORBITAL DELIVERY, CYBER COMMAND y MATRIX DELIVERY.
-Se agregan once: ROYAL DELIVERY, DARK EMPEROR, IMPERIAL, SHADOW DELIVERY, ONI EXPRESS, DRAGON CORE, ZERO PHANTOM, BLACK OPS, ROYAL TERMINATION, SAMURAI FINAL y DARK SYSTEM.
-Todos tienen formato de inicio y fin, y utilizan los datos actuales del formulario. Se conserva el estilo que ya tengas seleccionado.
+Archivos incluidos:
+- app.js
+- sw.js
+
+Instalación:
+1. Descomprime el ZIP.
+2. En tu repositorio de GitHub, reemplaza app.js y sw.js por estos archivos.
+3. Guarda los cambios en la rama main.
+4. Abre la app en Chrome Android y recarga. Si conserva la versión anterior, cierra la PWA y vuelve a abrirla; el nuevo service worker usa una caché distinta.
+
+Cambios:
+- En FIN DE RUTA aparece el apartado “Devoluciones del día”.
+- Escribe una devolución por renglón; puedes incluir guía y motivo en el mismo renglón.
+- El reporte cuenta las devoluciones capturadas y agrega el detalle con símbolos decorativos.
+- El historial guarda también los renglones de devolución.
+- Los 17 estilos sustituyen el conteo de pendientes por devoluciones.
+- No se modifica index.html ni style.css: el apartado se incorpora desde app.js.

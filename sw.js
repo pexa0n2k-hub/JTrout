@@ -1,4 +1,4 @@
-const CACHE='jtrout-pwa-v11-report-styles';
+const CACHE='jtrout-pwa-v12-daily-returns';
 const ASSETS=['./','./index.html','./style.css','./app.js','./manifest.webmanifest'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
