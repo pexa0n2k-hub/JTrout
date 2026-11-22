@@ -1,4 +1,4 @@
-const CACHE='jtrout-pwa-v13-returns-calculated';
+const CACHE='jtrout-pwa-v14-return-symbol-selector';
 const ASSETS=['./','./index.html','./style.css','./app.js','./manifest.webmanifest'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));

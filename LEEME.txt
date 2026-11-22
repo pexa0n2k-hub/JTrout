@@ -20,3 +20,6 @@ Cambios:
 
 
 v1.0: El número de devoluciones ahora se calcula como paquetes asignados menos paquetes entregados. Los detalles por renglón son texto libre y no afectan las cantidades.
+
+
+v1.1: Selector tipo slide menu para elegir el símbolo indicador de devoluciones. El símbolo seleccionado se aplica uniformemente a todos los renglones y se guarda en el dispositivo.
