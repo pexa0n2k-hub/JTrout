@@ -17,3 +17,6 @@ Cambios:
 - El historial guarda también los renglones de devolución.
 - Los 17 estilos sustituyen el conteo de pendientes por devoluciones.
 - No se modifica index.html ni style.css: el apartado se incorpora desde app.js.
+
+
+v1.0: El número de devoluciones ahora se calcula como paquetes asignados menos paquetes entregados. Los detalles por renglón son texto libre y no afectan las cantidades.
