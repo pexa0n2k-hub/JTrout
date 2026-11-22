@@ -28,3 +28,6 @@ v1.1: Selector tipo slide menu para elegir el símbolo indicador de devoluciones
 v1.2: Se agregan 20 estilos de reporte completamente nuevos (37 estilos en total). Diseños: ticket, blueprint, marcador deportivo, periódico, bitácora espacial, western, lujo minimalista, arcade 8-bit, botánico, dorado, señalética industrial, náutico, archivo, circuito, monocromo, festival, origami, postal vintage, cómic y zen.
 
 Instalación: reemplaza app.js y sw.js. No es necesario reemplazar index.html ni style.css.
+
+
+v1.3: Se agregan 13 estilos adicionales para completar 50 estilos de reporte distintos: ATLAS ROUTE, VAPOR POST, KINGDOM COURIER, EVIDENCE FILE, SAKURA LETTER, MINIMAL GRID, BLUE HOUR, BARCODE MANIFEST, CALENDAR BLOCK, STAMP COLLECTION, HAZMAT CONTROL, MOSAIC REPORT y FUTURIST 2049.

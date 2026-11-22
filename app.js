@@ -288,6 +288,225 @@ ${d.name}
 戻り ${d.returnsCount}
 ${d.service} / ${d.cp}
 静かな終わり`}
+,{id:'atlas',name:'ATLAS ROUTE',tag:'Mapa cartográfico',start:d=>`╔══ ATLAS / ROUTE OPEN ══╗
+MAPA DE OPERACIÓN
+CONDUCTOR: ${d.name}
+REGIÓN: VALLE DE CHALCO
+CUADRANTE: ${d.cp}
+RED: ${d.service}
+CARGA: ${d.total}
+COORDENADAS ACTIVAS
+FECHA: ${d.date}`,end:d=>`╔══ ATLAS / ROUTE CLOSED ══╗
+MAPA DE OPERACIÓN
+CONDUCTOR: ${d.name}
+CUADRANTE: ${d.cp}
+RED: ${d.service}
+CARGA INICIAL: ${d.total}
+ENTREGAS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+MAPA COMPLETADO
+FECHA: ${d.date}`}
+,{id:'vapor',name:'VAPOR POST',tag:'Retro vaporwave',start:d=>`V A P O R  /  R O U T E
+✦ TURNO INICIADO ✦
+PILOTO: ${d.name}
+SECTOR: VALLE DE CHALCO
+CP: ${d.cp}
+SERVICIO: ${d.service}
+CARGA: ${d.total}
+▓▓▓░░░ SISTEMA ONLINE
+${d.date}`,end:d=>`V A P O R  /  R O U T E
+✦ TURNO FINALIZADO ✦
+PILOTO: ${d.name}
+SECTOR: VALLE DE CHALCO
+CP: ${d.cp}
+SERVICIO: ${d.service}
+CARGA: ${d.total}
+ENTREGAS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+▓▓▓▓▓▓ SISTEMA OFFLINE
+${d.date}`}
+,{id:'medieval',name:'KINGDOM COURIER',tag:'Pergamino medieval',start:d=>`⚔ REINO DEL MENSAJERO ⚔
+ORDEN DE SALIDA
+PORTADOR: ${d.name}
+TERRITORIO: VALLE DE CHALCO
+SELLO: ${d.cp}
+ORDEN: ${d.service}
+CARGA: ${d.total}
+JORNADA ABIERTA
+${d.date}`,end:d=>`⚔ REINO DEL MENSAJERO ⚔
+ACTA DE REGRESO
+PORTADOR: ${d.name}
+TERRITORIO: VALLE DE CHALCO
+SELLO: ${d.cp}
+ORDEN: ${d.service}
+CARGA: ${d.total}
+ENTREGADOS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+JORNADA CERRADA
+${d.date}`}
+,{id:'evidence',name:'EVIDENCE FILE',tag:'Expediente policial',start:d=>`FILE 01 / EVIDENCE
+CASE: ROUTE DEPLOYMENT
+AGENT: ${d.name}
+DISTRICT: VALLE DE CHALCO
+ZIP: ${d.cp}
+CLASS: ${d.service}
+ITEMS: ${d.total}
+CASE STATUS: OPEN
+DATE: ${d.date}`,end:d=>`FILE 01 / EVIDENCE
+CASE: ROUTE REPORT
+AGENT: ${d.name}
+DISTRICT: VALLE DE CHALCO
+ZIP: ${d.cp}
+CLASS: ${d.service}
+ITEMS RECEIVED: ${d.total}
+DELIVERED: ${d.done}
+RETURNS: ${d.returnsCount}
+CASE STATUS: CLOSED
+DATE: ${d.date}`}
+,{id:'sakura',name:'SAKURA LETTER',tag:'Carta japonesa',start:d=>`拝啓 — 配達日誌
+出発 / INICIO
+配達員: ${d.name}
+地域: VALLE DE CHALCO
+郵便番号: ${d.cp}
+便: ${d.service}
+荷物: ${d.total}
+道は続く…
+${d.date}`,end:d=>`拝啓 — 配達日誌
+帰着 / FIN
+配達員: ${d.name}
+郵便番号: ${d.cp}
+便: ${d.service}
+荷物: ${d.total}
+配達済: ${d.done}
+返送: ${d.returnsCount}
+本日の任務完了
+${d.date}`}
+,{id:'minimalgrid',name:'MINIMAL GRID',tag:'Grid editorial',start:d=>`┌ ROUTE ────────────────
+│ DRIVER  ${d.name}
+│ AREA    VALLE DE CHALCO
+│ CP      ${d.cp}
+│ SERVICE ${d.service}
+│ LOAD    ${d.total}
+│ STATUS  / START
+└ ${d.date}`,end:d=>`┌ ROUTE ────────────────
+│ DRIVER  ${d.name}
+│ CP      ${d.cp}
+│ SERVICE ${d.service}
+│ LOAD    ${d.total}
+│ DONE    ${d.done}
+│ RETURNS ${d.returnsCount}
+│ STATUS  / FINISH
+└ ${d.date}`}
+,{id:'bluehour',name:'BLUE HOUR',tag:'Nocturno poético',start:d=>`BLUE HOUR
+La ruta despierta.
+Mensajero: ${d.name}
+Zona: Valle de Chalco
+CP: ${d.cp}
+Servicio: ${d.service}
+Paquetes: ${d.total}
+La noche comienza.
+${d.date}`,end:d=>`BLUE HOUR
+La ruta descansa.
+Mensajero: ${d.name}
+CP: ${d.cp}
+Servicio: ${d.service}
+Paquetes: ${d.total}
+Entregados: ${d.done}
+Devoluciones: ${d.returnsCount}
+Misión concluida.
+${d.date}`}
+,{id:'barcode',name:'BARCODE MANIFEST',tag:'Código de barras',start:d=>`||| || ||| ROUTE START
+ID: ${d.cp}-${d.service}
+OP: ${d.name}
+AREA: VALLE DE CHALCO
+LOAD: ${d.total}
+|| ||| || ||| ACTIVE
+${d.date}`,end:d=>`||| || ||| ROUTE END
+ID: ${d.cp}-${d.service}
+OP: ${d.name}
+LOAD: ${d.total}
+DONE: ${d.done}
+RETURNS: ${d.returnsCount}
+|| ||| || ||| CLOSED
+${d.date}`}
+,{id:'calendar',name:'CALENDAR BLOCK',tag:'Calendario de bloques',start:d=>`┏━━━━━ TURNO ━━━━━┓
+◷ FECHA: ${d.date}
+PERSONAL: ${d.name}
+ZONA: VALLE DE CHALCO
+CP: ${d.cp}
+SERVICIO: ${d.service}
+PAQUETES: ${d.total}
+┗━━ RUTA ABIERTA ━━┛`,end:d=>`┏━━━━━ TURNO ━━━━━┓
+◷ FECHA: ${d.date}
+PERSONAL: ${d.name}
+CP: ${d.cp}
+SERVICIO: ${d.service}
+ASIGNADOS: ${d.total}
+ENTREGADOS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+┗━━ RUTA CERRADA ━━┛`}
+,{id:'stamp',name:'STAMP COLLECTION',tag:'Colección de sellos',start:d=>`✉️ SELLO DE SALIDA ✉️
+J&T / DISPATCH
+REPARTIDOR: ${d.name}
+DESTINO: VALLE DE CHALCO
+CÓDIGO: ${d.cp}
+CLASE: ${d.service}
+BULTOS: ${d.total}
+ESTAMPADO: ${d.date}`,end:d=>`✉️ SELLO DE REGRESO ✉️
+J&T / DISPATCH
+REPARTIDOR: ${d.name}
+CÓDIGO: ${d.cp}
+CLASE: ${d.service}
+BULTOS: ${d.total}
+ENTREGAS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+ESTAMPADO: ${d.date}`}
+,{id:'hazard',name:'HAZMAT CONTROL',tag:'Control de carga',start:d=>`⚠ CONTROL DE CARGA ⚠
+OPERADOR: ${d.name}
+ZONA: VALLE DE CHALCO
+CP: ${d.cp}
+RUTA: ${d.service}
+CARGA REGISTRADA: ${d.total}
+CONTROL: EN CURSO
+${d.date}`,end:d=>`⚠ CONTROL DE CARGA ⚠
+OPERADOR: ${d.name}
+CP: ${d.cp}
+RUTA: ${d.service}
+CARGA REGISTRADA: ${d.total}
+CARGA ENTREGADA: ${d.done}
+RETORNO: ${d.returnsCount}
+CONTROL: FINALIZADO
+${d.date}`}
+,{id:'mosaic',name:'MOSAIC REPORT',tag:'Mosaico tipográfico',start:d=>`M O S A I C
+R U T A  /  O P E N
+${d.name}
+VALLE DE CHALCO
+${d.service} · ${d.cp}
+▣ ${d.total} PACKAGES
+${d.date}`,end:d=>`M O S A I C
+R U T A  /  C L O S E D
+${d.name}
+${d.service} · ${d.cp}
+▣ ${d.total} ASSIGNED
+▣ ${d.done} DELIVERED
+▣ ${d.returnsCount} RETURNS
+${d.date}`}
+,{id:'futurist',name:'FUTURIST 2049',tag:'Futurismo geométrico',start:d=>`FUTURIST / 2049
+TRASMISSIONE: START
+OPERADOR: ${d.name}
+NODE: VALLE DE CHALCO
+CP NODE: ${d.cp}
+PROTOCOL: ${d.service}
+PAYLOAD: ${d.total}
+${d.date}`,end:d=>`FUTURIST / 2049
+TRASMISSIONE: END
+OPERADOR: ${d.name}
+CP NODE: ${d.cp}
+PROTOCOL: ${d.service}
+PAYLOAD: ${d.total}
+DELIVERED: ${d.done}
+RETURNS: ${d.returnsCount}
+${d.date}`}
 ];
 let data={postals:['56617','56618','56619','56613','56615'],history:[],profile:''};
 try{data={...data,...JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jtroute_pwa_v02')||'{}')};}catch(e){}
