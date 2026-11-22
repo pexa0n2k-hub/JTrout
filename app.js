@@ -22,7 +22,272 @@ const styles=[
 {id:'royal-end',name:'ROYAL TERMINATION',tag:'Cierre ornamental',start:d=>`꧁༒ J&T EXPRESS ༒꧂\n⚜ INICIO DE RUTA ⚜\n◈ ${d.name}\n◈ ${d.service} / ${d.cp}\n◈ PAQUETES: ${d.total}\n꧁ STATUS: ACTIVE ꧂`,end:d=>`꧁༒ J&T EXPRESS ༒꧂\n⚜ FIN DE RUTA ⚜\n━━━━━━━━━━━━━━━━\n◈ ASIGNADOS  : ${d.total}\n◈ ENTREGADOS : ${d.done}\n◈ DEVOLUCIONES: ${d.returnsCount}\n◈ SERVICIO   : ${d.service}\n◈ C.P.       : ${d.cp}\n꧁ STATUS: COMPLETED ꧂`},
 {id:'samurai-final',name:'SAMURAI FINAL',tag:'Samurái / cierre',start:d=>`༺⚔ J&T ⚔༻\n『 ROUTE DEPLOYED 』\n═══════ ༒ ═══════\n✓ OPERATOR : ${d.name}\n✓ SERVICE  : ${d.service}\n✓ SECTOR   : ${d.cp}\n✓ LOAD     : ${d.total}\n༺ MISSION START ༻`,end:d=>`༺⚔ J&T ⚔༻\n『 ROUTE COMPLETED 』\n═══════ ༒ ═══════\n✓ DELIVERED : ${d.done}\n✕ DEVOLUCIONES: ${d.returnsCount}\n▣ TOTAL     : ${d.total}\n⛩ SERVICE   : ${d.service}\n⛩ SECTOR    : ${d.cp}\n༺ MISSION END ༻`},
 {id:'dark-system',name:'DARK SYSTEM',tag:'Terminal oscuro',start:d=>`𖤍 J&T // SYSTEM BOOT 𖤍\n[ ROUTE INITIALIZATION ]\n> OPERATOR = ${d.name}\n> SERVICE  = ${d.service}\n> POSTAL   = ${d.cp}\n> LOAD     = ${d.total}\n『 OPERATION ACTIVE 』`,end:d=>`𖤍 J&T // SYSTEM SHUTDOWN 𖤍\n[ ROUTE TERMINATION ]\n> OPERATOR  = ${d.name}\n> ASSIGNED  = ${d.total}\n> DELIVERED = ${d.done}\n> DEVOLUCIONES = ${d.returnsCount}\n> SERVICE   = ${d.service}\n> POSTAL    = ${d.cp}\n『 OPERATION CLOSED 』`}
-
+,
+{id:'receipt',name:'RECEIPT 01',tag:'Ticket térmico / caja',start:d=>`🧾 J&T — RECIBO DE RUTA
+--------------------------------
+RECIBE: ${d.name}
+SERVICIO: ${d.service}
+CP: ${d.cp}
+CARGA: ${d.total} paquetes
+HORA DE SALIDA: ${d.date}
+[ RECIBO ABIERTO ]`,end:d=>`🧾 J&T — RECIBO DE CIERRE
+--------------------------------
+RECIBE: ${d.name}
+CARGA INICIAL: ${d.total}
+ENTREGADOS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+SERVICIO: ${d.service}
+CP: ${d.cp}
+[ RECIBO CERRADO ]`},
+{id:'blueprint',name:'BLUEPRINT',tag:'Plano técnico',start:d=>`╔═ PLANO DE DISTRIBUCIÓN ═╗
+TÉCNICO: ${d.name}
+NODO: ${d.cp}
+RED: ${d.service}
+CARGA: ${d.total}
+COORD. ${d.date}
+╚═ TRAZADO INICIADO ═╝`,end:d=>`╔═ PLANO DE CIERRE ═╗
+TÉCNICO: ${d.name}
+NODO: ${d.cp}
+RED: ${d.service}
+CARGA: ${d.total}
+OK: ${d.done}
+RET: ${d.returnsCount}
+╚═ TRAZADO FINALIZADO ═╝`},
+{id:'sports',name:'DELIVERY LEAGUE',tag:'Marcador deportivo',start:d=>`🏁 MARCADOR DE RUTA
+━━━━━━━━━━━━
+TEAM: ${d.name}
+DIVISIÓN: ${d.service}
+CANCHA: ${d.cp}
+META: ${d.total}
+⚡ JUEGO EN CURSO`,end:d=>`🏁 MARCADOR FINAL
+━━━━━━━━━━━━
+TEAM: ${d.name}
+META: ${d.total}
+GOLES: ${d.done}
+FALTANTES: ${d.returnsCount}
+DIVISIÓN: ${d.service}
+CANCHA: ${d.cp}
+🏆 FIN DEL JUEGO`},
+{id:'newspaper',name:'DAILY DISPATCH',tag:'Periódico clásico',start:d=>`THE DAILY DISPATCH
+──────────────────
+EDICIÓN: ${d.date}
+MENSAJERO: ${d.name}
+DISTRITO: VALLE DE CHALCO
+RUTA ${d.service} · ${d.cp}
+Se reportan ${d.total} envíos para distribución.`,end:d=>`THE DAILY DISPATCH · CIERRE
+──────────────────
+EDICIÓN: ${d.date}
+MENSAJERO: ${d.name}
+De ${d.total} envíos, ${d.done} fueron entregados.
+Devoluciones: ${d.returnsCount}
+RUTA ${d.service} · ${d.cp}`},
+{id:'space',name:'STARFLEET',tag:'Bitácora espacial',start:d=>`✦ STARFLEET LOG ✦
+NAVE: ${d.name}
+SECTOR: ${d.cp}
+FRECUENCIA: ${d.service}
+CARGA: ${d.total}
+ESTADO: DESPEGUE
+UTC LOCAL: ${d.date}`,end:d=>`✦ STARFLEET LOG ✦
+NAVE: ${d.name}
+SECTOR: ${d.cp}
+FRECUENCIA: ${d.service}
+CARGA: ${d.total}
+ENTREGAS: ${d.done}
+RETORNO: ${d.returnsCount}
+ESTADO: ATRAQUE`},
+{id:'western',name:'WILD ROUTE',tag:'Western / cartel de madera',start:d=>`WANTED: ROUTE START
+★ ${d.name} ★
+TERRITORY: VALLE DE CHALCO
+POST: ${d.cp}
+CREW: ${d.service}
+CARGO: ${d.total}
+-- OUT ON THE TRAIL --`,end:d=>`WANTED: ROUTE CLOSED
+★ ${d.name} ★
+CARGO: ${d.total}
+DELIVERED: ${d.done}
+RETURNED: ${d.returnsCount}
+POST: ${d.cp}
+CREW: ${d.service}
+-- TRAIL COMPLETE --`},
+{id:'luxury',name:'MONOGRAM',tag:'Minimal lujo',start:d=>`J&T / PRIVATE COURIER
+${d.name}
+${d.service}  |  ${d.cp}
+${d.total} PIEZAS
+RUTA · ${d.date}
+────────────`,end:d=>`J&T / PRIVATE COURIER
+${d.name}
+${d.service}  |  ${d.cp}
+${d.total} PIEZAS
+${d.done} ENTREGADAS
+${d.returnsCount} DEVOLUCIONES
+────────────`},
+{id:'pixel',name:'8-BIT RUN',tag:'Pixel / arcade',start:d=>`╔═══ LEVEL 01 ═══╗
+PLAYER: ${d.name}
+MAP: ${d.cp}
+MODE: ${d.service}
+ITEMS: ${d.total}
+▶ PRESS START`,end:d=>`╔═══ LEVEL CLEAR ═══╗
+PLAYER: ${d.name}
+ITEMS: ${d.total}
+SCORE: ${d.done}
+MISSED: ${d.returnsCount}
+MAP: ${d.cp}
+★ GAME OVER ★`},
+{id:'botanical',name:'BOTANIC POST',tag:'Botánico / naturaleza',start:d=>`❧ HERBARIO DE RUTA ❧
+Recolector: ${d.name}
+Zona: ${d.cp}
+Variedad: ${d.service}
+Carga: ${d.total}
+☘ Jornada iniciada`,end:d=>`❧ HERBARIO DE RUTA ❧
+Recolector: ${d.name}
+Carga recolectada: ${d.total}
+Entregas: ${d.done}
+Retornos: ${d.returnsCount}
+Zona: ${d.cp}
+☘ Jornada concluida`},
+{id:'elegant',name:'GOLDEN HOUR',tag:'Elegante dorado',start:d=>`GOLDEN HOUR · J&T
+━━━━━━━━━━━━━━
+${d.name}
+${d.service} / ${d.cp}
+${d.total} DESTINOS
+Salida · ${d.date}
+━━━━━━━━━━━━`,end:d=>`GOLDEN HOUR · J&T
+━━━━━━━━━━━━━━
+${d.name}
+${d.total} DESTINOS
+${d.done} COMPLETADOS
+${d.returnsCount} DEVOLUCIONES
+${d.service} / ${d.cp}
+━━━━━━━━━━━━`},
+{id:'warning',name:'SAFETY BOARD',tag:'Señalética / industrial',start:d=>`⚠ TABLERO OPERATIVO ⚠
+RESPONSABLE: ${d.name}
+ÁREA: ${d.cp}
+TIPO: ${d.service}
+CARGA: ${d.total}
+ESTADO: EN OPERACIÓN`,end:d=>`⚠ TABLERO DE RESULTADOS ⚠
+RESPONSABLE: ${d.name}
+CARGA: ${d.total}
+COMPLETADOS: ${d.done}
+DEVOLUCIONES: ${d.returnsCount}
+ÁREA: ${d.cp}
+ESTADO: OPERACIÓN CERRADA`},
+{id:'wave',name:'TIDAL LOG',tag:'Mar / náutico',start:d=>`⚓ TIDAL LOGBOOK
+CAPTAIN: ${d.name}
+PORT: ${d.cp}
+FLEET: ${d.service}
+CARGO: ${d.total}
+⛵ DEPARTURE`,end:d=>`⚓ TIDAL LOGBOOK
+CAPTAIN: ${d.name}
+PORT: ${d.cp}
+FLEET: ${d.service}
+CARGO: ${d.total}
+DELIVERED: ${d.done}
+BACK ON BOARD: ${d.returnsCount}
+⛵ ARRIVAL`},
+{id:'museum',name:'ARCHIVE CARD',tag:'Ficha de archivo',start:d=>`ARCHIVO · FICHA 001
+Nombre: ${d.name}
+Registro: ${d.date}
+Código: ${d.cp}
+Clase: ${d.service}
+Elementos: ${d.total}
+Estado: ARCHIVO ABIERTO`,end:d=>`ARCHIVO · FICHA FINAL
+Nombre: ${d.name}
+Código: ${d.cp}
+Clase: ${d.service}
+Elementos: ${d.total}
+Procesados: ${d.done}
+Retorno: ${d.returnsCount}
+Estado: ARCHIVADO`},
+{id:'circuit',name:'CIRCUIT FLOW',tag:'Circuito electrónico',start:d=>`[JTR // CIRCUIT FLOW]
+IN: ${d.total} PKG
+NODE: ${d.cp}
+BUS: ${d.service}
+OP: ${d.name}
+POWER: ON >>>`,end:d=>`[JTR // CIRCUIT FLOW]
+IN: ${d.total} PKG
+OUT: ${d.done} PKG
+BACK: ${d.returnsCount}
+NODE: ${d.cp}
+BUS: ${d.service}
+POWER: OFF <<<`},
+{id:'monochrome',name:'MONOCHROME',tag:'Editorial monocromo',start:d=>`J&T EXPRESS
+— ROUTE NOTE —
+${d.name}
+${d.date}
+${d.service} · ${d.cp}
+${d.total} paquetes
+Inicio de servicio.`,end:d=>`J&T EXPRESS
+— ROUTE NOTE —
+${d.name}
+${d.date}
+${d.service} · ${d.cp}
+${d.total} paquetes
+${d.done} entregados
+${d.returnsCount} devoluciones
+Fin de servicio.`},
+{id:'festival',name:'FESTIVAL PASS',tag:'Festival / pulsera',start:d=>`🎟️ ROUTE PASS
+ACCESS: ${d.name}
+STAGE: ${d.cp}
+ZONE: ${d.service}
+BAG: ${d.total}
+PASS: VALID • ${d.date}`,end:d=>`🎟️ ROUTE PASS · EXIT
+ACCESS: ${d.name}
+BAG: ${d.total}
+SCANNED: ${d.done}
+RETURN: ${d.returnsCount}
+STAGE: ${d.cp}
+PASS: CLOSED`},
+{id:'origami',name:'ORIGAMI',tag:'Origami / geometría',start:d=>`◇ ORIGAMI ROUTE ◇
+╱ ${d.name} ╲
+◇ ${d.service} ◇
+╲ ${d.cp} ╱
+FOLDS: ${d.total}
+PAPER IN MOTION`,end:d=>`◇ ORIGAMI ROUTE ◇
+╱ ${d.name} ╲
+◇ TOTAL ${d.total} ◇
+╲ OK ${d.done} ╱
+RET ${d.returnsCount}
+${d.service} · ${d.cp}
+FOLD COMPLETE`},
+{id:'royal-mail',name:'POSTAL HERITAGE',tag:'Postal vintage',start:d=>`✉ POSTAL SERVICE ✉
+DELIVERY SHEET
+Carrier: ${d.name}
+District: ${d.cp}
+Class: ${d.service}
+Mailbag: ${d.total}
+Date: ${d.date}`,end:d=>`✉ POSTAL SERVICE ✉
+DELIVERY SHEET · CLOSED
+Carrier: ${d.name}
+Mailbag: ${d.total}
+Delivered: ${d.done}
+Returned: ${d.returnsCount}
+District: ${d.cp}
+Class: ${d.service}`},
+{id:'comic',name:'COMIC PANEL',tag:'Cómic / viñeta',start:d=>`POW! ROUTE BEGINS
+★ ${d.name} ★
+LOCATION: ${d.cp}
+TEAM: ${d.service}
+PACKAGE POWER: ${d.total}
+TO BE CONTINUED…`,end:d=>`BAM! ROUTE ENDS
+★ ${d.name} ★
+PACKAGE POWER: ${d.total}
+DELIVERY POWER: ${d.done}
+RETURN COUNT: ${d.returnsCount}
+LOCATION: ${d.cp}
+THE END!`},
+{id:'zen',name:'ZEN FLOW',tag:'Zen / aire',start:d=>`J&T · 禅
+今日の配達
+${d.name}
+${d.service} / ${d.cp}
+荷物 ${d.total}
+静かな始まり`,end:d=>`J&T · 禅
+一日の終わり
+${d.name}
+荷物 ${d.total}
+完了 ${d.done}
+戻り ${d.returnsCount}
+${d.service} / ${d.cp}
+静かな終わり`}
 ];
 let data={postals:['56617','56618','56619','56613','56615'],history:[],profile:''};
 try{data={...data,...JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('jtroute_pwa_v02')||'{}')};}catch(e){}

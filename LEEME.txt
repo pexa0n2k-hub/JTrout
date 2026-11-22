@@ -23,3 +23,8 @@ v1.0: El número de devoluciones ahora se calcula como paquetes asignados menos 
 
 
 v1.1: Selector tipo slide menu para elegir el símbolo indicador de devoluciones. El símbolo seleccionado se aplica uniformemente a todos los renglones y se guarda en el dispositivo.
+
+
+v1.2: Se agregan 20 estilos de reporte completamente nuevos (37 estilos en total). Diseños: ticket, blueprint, marcador deportivo, periódico, bitácora espacial, western, lujo minimalista, arcade 8-bit, botánico, dorado, señalética industrial, náutico, archivo, circuito, monocromo, festival, origami, postal vintage, cómic y zen.
+
+Instalación: reemplaza app.js y sw.js. No es necesario reemplazar index.html ni style.css.
